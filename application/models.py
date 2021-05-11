@@ -18,9 +18,5 @@ class Order(db.Model):
     customer_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     order_status = db.Column(db.String(30), default="Order placed")
     tracking_num = db.Column(db.String(12))
-    date = db.Column(
-        db.Date, default=datetime.now(pytz.timezone("Europe/London")).date()
-    )
-    time = db.Column(
-        db.Time, default=datetime.now(pytz.timezone("Europe/London")).time()
-    )
+    date = db.Column(db.Date)
+    time = db.Column(db.Time)
