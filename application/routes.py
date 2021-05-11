@@ -44,7 +44,7 @@ def add_order():
                     user.order_numbers = str(user.order_numbers)
                     user.order_numbers += ", " + str(user_order)
                     db.session.commit()
-                    return redirect(url_for("home"))
+                return redirect(url_for("home"))
 
     return render_template("add-order.html", form=form)
 
