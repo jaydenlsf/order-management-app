@@ -2,16 +2,19 @@
 
 {% block body %}
 
-<h2>Order Management App</h2>
-
-<h3>Users</h3>
+<h2>Orders</h2><br>
 {% if users|length < 1 %}
 <p>User database is empty.</p>
+{% elif orders|length < 1 %}
+<p>Order database is empty.</p>
 {% else %}
 {% for user in users %}
-{{ user.name }} {{ user.orders }}
+{% if user.order_numbers != 'No order' %}
+<p>Email: {{ user.email }}</p>
+<p>Order numbers: {{ user.order_numbers }}</p>
 <br>
 <br>
+{% endif %}
 {% endfor %}
 {% endif %}
 
