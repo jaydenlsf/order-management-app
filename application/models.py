@@ -1,6 +1,4 @@
 from application import db
-from datetime import datetime
-import pytz
 
 
 class User(db.Model):
