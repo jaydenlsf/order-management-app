@@ -9,7 +9,9 @@
 <p>User database is empty.</p>
 {% else %}
 {% for user in users %}
-{{ user.name }}<br>
+{{ user.name }} {{ user.orders }}
+<br>
+<br>
 {% endfor %}
 {% endif %}
 

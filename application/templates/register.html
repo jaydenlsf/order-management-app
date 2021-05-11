@@ -13,6 +13,22 @@
         <p>{{ message }}</p>
         {% endfor %}
     </p>
+    <p>
+        {{ form.name.label }}
+        {{ form.name(size=50)}}
+    </p>
+    <p>
+        {{ form.house_number.label }}
+        {{ form.house_number(size=10)}}
+    </p>
+    <p>
+        {{ form.postcode.label }}
+        {{ form.postcode(size=8)}}
+    </p>
+    <p>
+        {{ form.phone.label }}
+        {{ form.phone(size=50)}}
+    </p>
     <p>{{ form.submit }}</p>
 </form>
 
