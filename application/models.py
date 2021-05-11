@@ -5,12 +5,12 @@ import pytz
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(320), nullable=False, unique=True)
+    email = db.Column(db.String(320), nullable=False)
     name = db.Column(db.String(30), nullable=False)
     house_number = db.Column(db.String(12), nullable=False)
     postcode = db.Column(db.String(10), nullable=False)
     phone = db.Column(db.String(11), nullable=False)
-    orders = db.Column(db.String(30))
+    order_numbers = db.Column(db.String(30), default="No order")
 
 
 class Order(db.Model):
