@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<h2>Order Management App</h2>
+
+<h3>Users</h3>
+{% if users|length < 1 %}
+<p>User database is empty.</p>
+{% else %}
+{% for user in users %}
+{{ user.name }}<br>
+{% endfor %}
+{% endif %}
+
+{% endblock body %}
