@@ -3,12 +3,15 @@ from flask import render_template, redirect, request, url_for, flash
 from application.models import User, Order
 from application.forms import UserForm, OrderForm
 from sqlalchemy.exc import IntegrityError
+from datetime import datetime
+import pytz
 
 
 @app.route("/")
 def home():
     users = User.query.all()
-    return render_template("index.html", users=users)
+    orders = Order.query.all()
+    return render_template("index.html", users=users, orders=orders)
 
 
 @app.route("/add-order", methods=["GET", "POST"])
@@ -21,17 +24,27 @@ def add_order():
             if user is None:
                 return redirect(url_for("register"))
             elif user is not None:
-                new_order = Order(customer_id=user.id)
+                new_order = Order(
+                    customer_id=user.id,
+                    date=datetime.now(pytz.timezone("Europe/London")).date(),
+                    time=datetime.now(pytz.timezone("Europe/London")).time(),
+                )
                 db.session.add(new_order)
                 db.session.commit()
-                user_order = Order.query.filter_by(customer_id=user.id).first().id
+                user_order = (
+                    Order.query.filter_by(customer_id=user.id)
+                    .order_by(Order.id.desc())
+                    .first()
+                    .id
+                )
                 if user.order_numbers == "No order":
                     user.order_numbers = user_order
+                    db.session.commit()
                 else:
                     user.order_numbers = str(user.order_numbers)
                     user.order_numbers += ", " + str(user_order)
-                db.session.commit()
-                return redirect(url_for("home"))
+                    db.session.commit()
+                    return redirect(url_for("home"))
 
     return render_template("add-order.html", form=form)
 
