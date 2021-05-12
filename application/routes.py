@@ -1,30 +1,52 @@
 from application import db, app
 from flask import render_template, redirect, request, url_for, flash
-from application.models import User, Order
-from application.forms import UserForm, OrderForm
-from sqlalchemy.exc import IntegrityError
+from application.models import Users, Orders
+from application.forms import (
+    UserForm,
+    OrderForm,
+    ChangeStatusForm,
+)
+from application.tracking_gen import tracking_gen
 from datetime import datetime
 import pytz
 
 
 @app.route("/")
 def home():
-    users = User.query.all()
-    orders = Order.query.all()
-    return render_template("index.html", users=users, orders=orders)
+    users = Users.query.all()
+    orders = Orders.query.all()
+    order_placed = []
+    out_for_delivery = []
+    delivered = []
+
+    for order in orders:
+        if order.order_status == "order placed":
+            order_placed.append(order)
+        elif order.order_status == "out for delivery":
+            out_for_delivery.append(order)
+        elif order.order_status == "delivered":
+            delivered.append(order)
+    return render_template(
+        "index.html",
+        users=users,
+        orders=orders,
+        order_placed=order_placed,
+        out_for_delivery=out_for_delivery,
+        delivered=delivered,
+    )
 
 
-@app.route("/add-order", methods=["GET", "POST"])
+@app.route("/add-Orders", methods=["GET", "POST"])
 def add_order():
     form = OrderForm()
 
     if request.method == "POST":
         if form.validate_on_submit():
-            user = User.query.filter_by(email=form.email.data).first()
+            user = Users.query.filter_by(email=form.email.data).first()
             if user is None:
                 return redirect(url_for("register"))
             elif user is not None:
-                new_order = Order(
+                new_order = Orders(
                     customer_id=user.id,
                     date=datetime.now(pytz.timezone("Europe/London")).date(),
                     time=datetime.now(pytz.timezone("Europe/London")).time(),
@@ -32,19 +54,20 @@ def add_order():
                 db.session.add(new_order)
                 db.session.commit()
                 user_order = (
-                    Order.query.filter_by(customer_id=user.id)
-                    .order_by(Order.id.desc())
+                    Orders.query.filter_by(customer_id=user.id)
+                    .order_by(Orders.id.desc())
                     .first()
                     .id
                 )
-                if user.order_numbers == "No order":
+                if user.order_numbers == "no order":
                     user.order_numbers = user_order
                     db.session.commit()
                 else:
                     user.order_numbers = str(user.order_numbers)
                     user.order_numbers += ", " + str(user_order)
                     db.session.commit()
-                return redirect(url_for("home"))
+                flash(f"New Orders has been placed by {user.name}.")
+                # return redirect(url_for("home"))
 
     return render_template("add-order.html", form=form)
 
@@ -55,9 +78,9 @@ def register():
 
     if request.method == "POST":
         if form.validate_on_submit():
-            user = User.query.filter_by(email=form.email.data).first()
+            user = Users.query.filter_by(email=form.email.data).first()
             if user is None:
-                new_user = User(
+                new_user = Users(
                     email=form.email.data,
                     name=form.name.data,
                     house_number=form.house_number.data,
@@ -74,6 +97,35 @@ def register():
     return render_template("register.html", title="Register", form=form)
 
 
-@app.route("/update-order", methods=["GET", "POST"])
-def update_order():
-    return render_template("update-order.html", title="Update Order")
+@app.route("/update-order/<int:id>", methods=["GET", "POST"])
+def update_order(id):
+    form = ChangeStatusForm()
+
+    # array to store existing tracking numbers
+    tracking_numbers = []
+    orders = Orders.query.all()
+    for order in orders:
+        if order.tracking_num != None:
+            tracking_numbers.append(order.tracking_num)
+
+    if request.method == "POST":
+        update_order = Orders.query.filter_by(id=id).first()
+        if form.validate_on_submit():
+            update_order.order_status = form.status.data
+            db.session.commit()
+            if update_order.order_status == "out for delivery":
+                if update_order.tracking_num in tracking_numbers:
+                    update_order.tracking_num = tracking_gen()
+                else:
+                    update_order.tracking_num = tracking_gen()
+            db.session.commit()
+            return redirect(url_for("home"))
+    return render_template("update-order.html", form=form, update_order=update_order)
+
+
+@app.route("/delete/<int:id>", methods=["GET", "POST"])
+def delete(id):
+    delete_order = Orders.query.filter_by(id=id).first()
+    db.session.delete(delete_order)
+    db.session.commit()
+    return redirect(url_for("home"))
