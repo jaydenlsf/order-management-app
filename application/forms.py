@@ -23,7 +23,7 @@ class ChangeStatusForm(FlaskForm):
         "Status",
         choices=[
             ("out for delivery", "Out for delivery"),
-            ("cancel order", "Cancel order"),
+            ("order cancelled", "Cancel order"),
         ],
     )
     submit = SubmitField("Change order status")
