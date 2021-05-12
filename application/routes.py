@@ -6,13 +6,20 @@ from application.forms import (
     OrderForm,
     ChangeStatusForm,
 )
-from application.tracking_gen import tracking_gen
 from datetime import datetime
 import pytz
+import string
+import random
 
 
 def pad_num(num):
     return f"{num:>04}"
+
+
+def tracking_gen():
+    return "".join(
+        random.choice(string.ascii_lowercase + string.digits) for i in range(8)
+    )
 
 
 @app.route("/")
