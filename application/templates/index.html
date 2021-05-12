@@ -4,18 +4,38 @@
 
 <h2>Orders</h2><br>
 {% if users|length < 1 %}
-<p>User database is empty.</p>
+    <p>User database is empty.</p>
 {% elif orders|length < 1 %}
-<p>Order database is empty.</p>
+    <p>Order database is empty.</p>
 {% else %}
-{% for user in users %}
-{% if user.order_numbers != 'No order' %}
-<p>Email: {{ user.email }}</p>
-<p>Order numbers: {{ user.order_numbers }}</p>
-<br>
-<br>
-{% endif %}
-{% endfor %}
+    <h3>Info Received</h3>
+    {% for order in order_placed %}
+        {{ order.id }}
+        <form action="{{ url_for('update_order', id=order.id) }}" method="post">
+            <input type="submit" value='Update'>
+        </form>
+        <form action="{{ url_for('delete', id=order.id) }}" method="post">
+            <input type="submit" value='Cancel order'>
+        </form>
+        <br>
+    {% endfor %}
+    <br><br>
+
+    <h3>Out for Delivery</h3>
+    {% for order in out_for_delivery %}
+        {{ order.id }}
+        <form action="{{ url_for('update_order', id=order.id) }}" method="post">
+            <input type="submit" value='Update'>
+        </form>
+        <br>
+    {% endfor %}
+    <br><br>
+
+    <h3>Delivered</h3>
+    {% for order in delivered %}
+        {{ order.id }}
+    {% endfor %}
+    <br><br>
 {% endif %}
 
 {% endblock body %}
