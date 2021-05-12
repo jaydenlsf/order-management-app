@@ -16,6 +16,7 @@ def pad_num(num):
 
 
 @app.route("/")
+@app.route("/index")
 def home():
     users = Users.query.all()
     orders = Orders.query.all()
@@ -43,7 +44,7 @@ def home():
     )
 
 
-@app.route("/add-Orders", methods=["GET", "POST"])
+@app.route("/add-order", methods=["GET", "POST"])
 def add_order():
     form = OrderForm()
 
