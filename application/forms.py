@@ -23,7 +23,6 @@ class ChangeStatusForm(FlaskForm):
         "Status",
         choices=[
             ("out for delivery", "Out for delivery"),
-            ("delivered", "Delivered"),
             ("cancel order", "Cancel order"),
         ],
     )

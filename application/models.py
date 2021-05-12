@@ -9,7 +9,7 @@ class Users(db.Model):
     postcode = db.Column(db.String(10), nullable=False)
     phone = db.Column(db.String(11), nullable=False)
     order_numbers = db.Column(db.String(30), default="no order")
-    orders = db.relationship("Orders", backref="users")
+    orders = db.relationship("Orders", backref="user")
 
 
 class Orders(db.Model):
