@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<h2>Edit order status ✍</h2>
+
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.status.label }}
+        {{ form.status }}
+    </p>
+    <p>{{ form.submit }}</p>
+</form>
+
+
+{% endblock body %}

@@ -1,0 +1,41 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+
+<h2>Order details</h2><br>
+
+{% if order.order_status == 'order placed' %}
+<p>Order id: {{ pad_num(order.id) }}</p>
+<p>Order placed on: {{ order.date }} {{ order.time }}</p><br>
+<h3>Customer's details</h3>
+<p>Name: {{ order.user.name }}</p>
+<p>House number: {{ order.user.house_number }}</p>
+<p>Postcode: {{ order.user.postcode }}</p>
+<p>Phone number: {{ order.user.phone }}</p>
+
+{% elif order.order_status == 'out for delivery' %}
+
+<p>Order id: {{ pad_num(order.id) }}</p>
+<p>Tracking number: {{ order.tracking_num }}</p>
+<p>Out for delivery date: {{ order.date }}</p>
+<p>Out for delivery time: {{ order.time }}</p><br>
+<h3>Customer's details</h3>
+<p>Name: {{ order.user.name }}</p>
+<p>House number: {{ order.user.house_number }}</p>
+<p>Postcode: {{ order.user.postcode }}</p>
+<p>Phone number: {{ order.user.phone }}</p>
+
+{% elif order.order_status == 'delivered' %}
+<p>Order id: {{ pad_num(order.id) }}</p>
+<p>Tracking number: {{ order.tracking_num }}</p>
+<p>Delivered on: {{ order.date }} {{ order.time }}</p><br>
+<h3>Customer's details</h3>
+<p>Name: {{ order.user.name }}</p>
+<p>House number: {{ order.user.house_number }}</p>
+<p>Postcode: {{ order.user.postcode }}</p>
+<p>Phone number: {{ order.user.phone }}</p>
+
+{% endif %}
+
+{% endblock body %}
