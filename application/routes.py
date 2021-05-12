@@ -11,6 +11,10 @@ from datetime import datetime
 import pytz
 
 
+def pad_num(num):
+    return f"{num:>04}"
+
+
 @app.route("/")
 def home():
     users = Users.query.all()
@@ -26,6 +30,7 @@ def home():
             out_for_delivery.append(order)
         elif order.order_status == "delivered":
             delivered.append(order)
+    order_count = len(order_placed) + len(out_for_delivery) + len(delivered)
     return render_template(
         "index.html",
         users=users,
@@ -33,6 +38,8 @@ def home():
         order_placed=order_placed,
         out_for_delivery=out_for_delivery,
         delivered=delivered,
+        order_count=order_count,
+        pad_num=pad_num,
     )
 
 
@@ -44,12 +51,15 @@ def add_order():
         if form.validate_on_submit():
             user = Users.query.filter_by(email=form.email.data).first()
             if user is None:
-                return redirect(url_for("register"))
+                flash("Account does not exist.")
+                # return redirect(url_for("register"))
             elif user is not None:
                 new_order = Orders(
                     customer_id=user.id,
                     date=datetime.now(pytz.timezone("Europe/London")).date(),
-                    time=datetime.now(pytz.timezone("Europe/London")).time(),
+                    time=datetime.now(pytz.timezone("Europe/London"))
+                    .replace(microsecond=0)
+                    .time(),
                 )
                 db.session.add(new_order)
                 db.session.commit()
@@ -66,10 +76,16 @@ def add_order():
                     user.order_numbers = str(user.order_numbers)
                     user.order_numbers += ", " + str(user_order)
                     db.session.commit()
-                flash(f"New Orders has been placed by {user.name}.")
+                flash(f"New order has been placed by {user.name}.")
                 # return redirect(url_for("home"))
 
     return render_template("add-order.html", form=form)
+
+
+@app.route("/view-order/<int:id>", methods=["GET", "POST"])
+def view_order(id):
+    order = Orders.query.filter_by(id=id).first()
+    return render_template("view-order.html", order=order, pad_num=pad_num)
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -89,7 +105,7 @@ def register():
                 )
                 db.session.add(new_user)
                 db.session.commit()
-                return redirect(url_for("home"))
+                flash("Successfully registered a new user.")
             else:
                 flash("Please use a different email.")
                 return redirect(url_for("register"))
@@ -100,8 +116,6 @@ def register():
 @app.route("/update-order/<int:id>", methods=["GET", "POST"])
 def update_order(id):
     form = ChangeStatusForm()
-
-    # array to store existing tracking numbers
     tracking_numbers = []
     orders = Orders.query.all()
     for order in orders:
@@ -127,5 +141,13 @@ def update_order(id):
 def delete(id):
     delete_order = Orders.query.filter_by(id=id).first()
     db.session.delete(delete_order)
+    db.session.commit()
+    return redirect(url_for("home"))
+
+
+@app.route("/delivered/<int:id>", methods=["POST"])
+def delivered(id):
+    delivered_order = Orders.query.filter_by(id=id).first()
+    delivered_order.order_status = "delivered"
     db.session.commit()
     return redirect(url_for("home"))
