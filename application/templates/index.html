@@ -2,38 +2,50 @@
 
 {% block body %}
 
-<h2>Orders</h2><br>
+<h2>Orders 📜</h2>
+<p>Total number of orders: {{ order_count }}</p><br>
+
 {% if users|length < 1 %}
     <p>User database is empty.</p>
 {% elif orders|length < 1 %}
     <p>Order database is empty.</p>
 {% else %}
-    <h3>Info Received</h3>
+    <h3>Info Received 📩</h3>
     {% for order in order_placed %}
-        {{ order.id }}
+        {{ order.user.email }}  ➽  
+        {{ pad_num(order.id) }}
         <form action="{{ url_for('update_order', id=order.id) }}" method="post">
-            <input type="submit" value='Update'>
+            <button type="submit">Update</button>
         </form>
-        <form action="{{ url_for('delete', id=order.id) }}" method="post">
-            <input type="submit" value='Cancel order'>
+        <form action="{{ url_for('view_order', id=order.id) }}" method="post">
+            <button type="submit">View details</button>
         </form>
-        <br>
+        <br><br>
     {% endfor %}
     <br><br>
 
-    <h3>Out for Delivery</h3>
+    <h3>Out for Delivery 🚚</h3>
     {% for order in out_for_delivery %}
-        {{ order.id }}
-        <form action="{{ url_for('update_order', id=order.id) }}" method="post">
-            <input type="submit" value='Update'>
+        {{ order.user.email }}  ➽  
+        {{ pad_num(order.id) }}<br>
+        <p>Tracking number: {{ order.tracking_num }}</p>
+        <form action="{{ url_for('delivered', id=order.id) }}" method="post">
+            <button type="submit">Delivered</button>
         </form>
-        <br>
+        <form action="{{ url_for('view_order', id=order.id) }}" method="post">
+            <button type="submit">View details</button>
+        </form>
+        <br><br>
     {% endfor %}
     <br><br>
 
-    <h3>Delivered</h3>
+    <h3>Delivered ✅</h3>
     {% for order in delivered %}
-        {{ order.id }}
+        {{ order.user.email }}  ➽  
+        {{ pad_num(order.id) }}
+        <form action="{{ url_for('view_order', id=order.id) }}" method="post">
+            <button type="submit">View details</button>
+        </form><br><br>
     {% endfor %}
     <br><br>
 {% endif %}
