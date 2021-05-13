@@ -1,11 +1,7 @@
 from application import db, app
 from flask import render_template, redirect, request, url_for, flash
 from application.models import Users, Orders
-from application.forms import (
-    UserForm,
-    OrderForm,
-    ChangeStatusForm,
-)
+from application.forms import UserForm, OrderForm, ChangeStatusForm
 from datetime import datetime
 import pytz
 import string
@@ -41,6 +37,7 @@ def home():
     order_count = len(order_placed) + len(out_for_delivery) + len(delivered)
     return render_template(
         "index.html",
+        title="Homepage",
         users=users,
         orders=orders,
         order_placed=order_placed,
@@ -60,7 +57,6 @@ def add_order():
             user = Users.query.filter_by(email=form.email.data).first()
             if user is None:
                 flash("Account does not exist.")
-                # return redirect(url_for("register"))
             elif user is not None:
                 new_order = Orders(
                     customer_id=user.id,
@@ -85,9 +81,8 @@ def add_order():
                     user.order_numbers += ", " + str(user_order)
                     db.session.commit()
                 flash(f"New order has been placed by {user.name}.")
-                # return redirect(url_for("home"))
 
-    return render_template("add-order.html", form=form)
+    return render_template("add-order.html", form=form, title="Place Order")
 
 
 @app.route("/view-order/<int:id>", methods=["GET", "POST"])
