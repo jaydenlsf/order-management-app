@@ -1,5 +1,4 @@
 from application.routes import pad_num, tracking_gen
-import unittest
 from flask import url_for
 from flask_testing import TestCase
 
