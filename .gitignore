@@ -136,3 +136,5 @@ test.db
 *.png
 *.pdf
 *.db
+.vscode
+**/*.db-journal
