@@ -105,6 +105,21 @@ class TestCreateUser(TestCase):
         self.assertEqual("0788888888", user.phone)
 
 
+class TestDuplicateEmail(TestCase):
+    def test_duplicate_email(self):
+        response = self.client.post(
+            url_for("register"),
+            data=dict(
+                email="test@gmail.com",
+                name="Test",
+                house_number="82",
+                postcode="G2 8PX",
+                phone="0788888888",
+            ),
+            follow_redirects=True,
+        )
+
+
 class TestAddOrder(TestCase):
     def test_add_order(self):
         response = self.client.post(
@@ -118,6 +133,13 @@ class TestAddOrder(TestCase):
         self.assertEqual("order placed", order.order_status)
         self.assertEqual(None, order.tracking_num)
         self.assertIn(order, user.orders)
+
+
+class TestAddOrderNoUser(TestCase):
+    def test_add_order_no_user(self):
+        response = self.client.post(
+            url_for("add_order"), data=dict(email="nonexistingemail@gmail.com")
+        )
 
 
 class TestViewOrder(TestCase):
