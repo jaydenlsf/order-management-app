@@ -8,7 +8,7 @@
     {{ form.hidden_tag() }}
     <p>
         {{ form.email.label }}
-        {{ form.email(size=50)}} 
+        {{ form.email(size=50, autocomplete="off")}} 
         {% for message in get_flashed_messages() %}
         <p>{{ message }}</p>
         {% endfor %}

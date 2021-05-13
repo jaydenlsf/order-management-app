@@ -8,26 +8,26 @@
     {{ form.hidden_tag() }}
     <p>
         {{ form.email.label }}
-        {{ form.email(size=50)}} 
+        {{ form.email(size=50, autocomplete="off")}} 
         {% for message in get_flashed_messages() %}
         <p>{{ message }}</p>
         {% endfor %}
     </p>
     <p>
         {{ form.name.label }}
-        {{ form.name(size=50)}}
+        {{ form.name(size=50, autocomplete="off")}}
     </p>
     <p>
         {{ form.house_number.label }}
-        {{ form.house_number(size=10)}}
+        {{ form.house_number(size=10, autocomplete="off")}}
     </p>
     <p>
         {{ form.postcode.label }}
-        {{ form.postcode(size=8)}}
+        {{ form.postcode(size=8, autocomplete="off")}}
     </p>
     <p>
         {{ form.phone.label }}
-        {{ form.phone(size=50)}}
+        {{ form.phone(size=50, autocomplete="off")}}
     </p>
     <p>{{ form.submit }}</p>
 </form>
