@@ -8,7 +8,7 @@ class Users(db.Model):
     house_number = db.Column(db.String(12), nullable=False)
     postcode = db.Column(db.String(10), nullable=False)
     phone = db.Column(db.String(11), nullable=False)
-    order_numbers = db.Column(db.String(30), default="no order")
+    # order_numbers = db.Column(db.String(30), default="no order")
     orders = db.relationship("Orders", backref="user")
 
 

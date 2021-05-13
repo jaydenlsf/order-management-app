@@ -48,6 +48,32 @@ def home():
     )
 
 
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    form = UserForm()
+
+    if request.method == "POST":
+        if form.validate_on_submit():
+            user = Users.query.filter_by(email=form.email.data).first()
+            if user is None:
+                new_user = Users(
+                    email=form.email.data,
+                    name=form.name.data,
+                    house_number=form.house_number.data,
+                    postcode=form.postcode.data,
+                    phone=form.phone.data,
+                )
+                db.session.add(new_user)
+                db.session.commit()
+                flash("Successfully registered a new user.")
+                return redirect(url_for("register"))
+            else:
+                flash("Please use a different email.")
+                return redirect(url_for("register"))
+
+    return render_template("register.html", title="Register", form=form)
+
+
 @app.route("/add-order", methods=["GET", "POST"])
 def add_order():
     form = OrderForm()
@@ -67,19 +93,6 @@ def add_order():
                 )
                 db.session.add(new_order)
                 db.session.commit()
-                user_order = (
-                    Orders.query.filter_by(customer_id=user.id)
-                    .order_by(Orders.id.desc())
-                    .first()
-                    .id
-                )
-                if user.order_numbers == "no order":
-                    user.order_numbers = user_order
-                    db.session.commit()
-                else:
-                    user.order_numbers = str(user.order_numbers)
-                    user.order_numbers += ", " + str(user_order)
-                    db.session.commit()
                 flash(f"New order has been placed by {user.name}.")
 
     return render_template("add-order.html", form=form, title="Place Order")
@@ -89,31 +102,6 @@ def add_order():
 def view_order(id):
     order = Orders.query.filter_by(id=id).first()
     return render_template("view-order.html", order=order, pad_num=pad_num)
-
-
-@app.route("/register", methods=["GET", "POST"])
-def register():
-    form = UserForm()
-
-    if request.method == "POST":
-        if form.validate_on_submit():
-            user = Users.query.filter_by(email=form.email.data).first()
-            if user is None:
-                new_user = Users(
-                    email=form.email.data,
-                    name=form.name.data,
-                    house_number=form.house_number.data,
-                    postcode=form.postcode.data,
-                    phone=form.phone.data,
-                )
-                db.session.add(new_user)
-                db.session.commit()
-                flash("Successfully registered a new user.")
-            else:
-                flash("Please use a different email.")
-                return redirect(url_for("register"))
-
-    return render_template("register.html", title="Register", form=form)
 
 
 @app.route("/update-order/<int:id>", methods=["GET", "POST"])
@@ -137,20 +125,21 @@ def update_order(id):
                     update_order.tracking_num = tracking_gen()
             db.session.commit()
             return redirect(url_for("home"))
+
     return render_template("update-order.html", form=form)
-
-
-@app.route("/delete/<int:id>", methods=["GET", "POST"])
-def delete(id):
-    delete_order = Orders.query.filter_by(id=id).first()
-    db.session.delete(delete_order)
-    db.session.commit()
-    return redirect(url_for("home"))
 
 
 @app.route("/delivered/<int:id>", methods=["POST"])
 def delivered(id):
     delivered_order = Orders.query.filter_by(id=id).first()
     delivered_order.order_status = "delivered"
+    db.session.commit()
+    return redirect(url_for("home"))
+
+
+@app.route("/delete/<int:id>", methods=["POST"])
+def delete(id):
+    delete_order = Orders.query.filter_by(id=id).first()
+    db.session.delete(delete_order)
     db.session.commit()
     return redirect(url_for("home"))
