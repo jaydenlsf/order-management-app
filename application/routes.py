@@ -137,7 +137,7 @@ def update_order(id):
                     update_order.tracking_num = tracking_gen()
             db.session.commit()
             return redirect(url_for("home"))
-    return render_template("update-order.html", form=form, update_order=update_order)
+    return render_template("update-order.html", form=form)
 
 
 @app.route("/delete/<int:id>", methods=["GET", "POST"])
