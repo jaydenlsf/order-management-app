@@ -39,6 +39,7 @@ class TestBase(LiveServerTestCase):
 
 class TestCreateUser(TestBase):
     def test_submit_input(self):
+        self.driver.get(f"http://localhost:{self.TEST_PORT}/register")
         self.driver.find_element_by_xpath('//*[@id="email"]').send_keys(
             "test@gmail.com"
         )
@@ -47,3 +48,13 @@ class TestCreateUser(TestBase):
         self.driver.find_element_by_xpath('//*[@id="postcode"]').send_keys("G3 8PX")
         self.driver.find_element_by_xpath('//*[@id="phone"]').send_keys("07999999999")
         self.driver.find_element_by_xpath('//*[@id="submit"]').click()
+
+class TestAddOrder(TestBase):
+    # try placing an order with a non-existing user
+    def test_add_order(self):
+        self.driver.get(f"http://localhost:{self.TEST_PORT}/add-order")
+        self.driver.find_element_by_xpath('//*[@id="email"]').send_keys('random@gmail.com')
+        self.driver.find_element_by_xpath('//*[@id="submit"]').click()
+
+        error = self.driver.find_element_by_xpath('/html/body/form/p[2]').text
+        self.assertIn('Account does not exist.', error)
