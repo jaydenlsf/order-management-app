@@ -58,3 +58,9 @@ class TestAddOrder(TestBase):
 
         error = self.driver.find_element_by_xpath('/html/body/form/p[2]').text
         self.assertIn('Account does not exist.', error)
+
+class TestHomepage(TestBase):
+    def test_homepage(self):
+        self.driver.get(f"http://localhost:{self.TEST_PORT}")
+        number_of_orders_label = self.driver.find_element_by_xpath('/html/body/p[1]').text
+        self.assertIn('Total number of orders:', number_of_orders_label)
