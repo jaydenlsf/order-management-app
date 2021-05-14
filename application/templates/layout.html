@@ -1,25 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         .body {
-            background-color:ivory;
-            font-family:Verdana, Geneva, Tahoma, sans-serif;
+            background-color: ivory;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
             padding: 30px;
         }
+
         hr {
             margin-top: 25px;
         }
+
         h1 {
             text-align: center;
             margin: 40px;
         }
+
         .navbar {
             text-align: center;
         }
+
         a {
             background-color: rgb(255, 255, 100);
             color: black;
@@ -30,9 +35,11 @@
             padding: 8px;
             margin: 4px;
         }
-        a:hover{
+
+        a:hover {
             box-shadow: 0 0 30px #ccc;
         }
+
         a:active {
             background-color: rgb(160, 160, 20);
         }
@@ -42,7 +49,10 @@
     {% else %}
     <title>Order Management App</title>
     {% endif %}
+    <link rel="shortcut icon" type="image/jpg"
+        href="https://img-premium.flaticon.com/png/512/1524/1524855.png?token=exp=1620995437~hmac=f0588a366f35a67af1b7e10ce25ad549">
 </head>
+
 <body class='body'>
     <h1>🔷 Order Management App 🔷</h1>
     <div class="navbar">
@@ -50,8 +60,8 @@
         <a href="{{ url_for('register') }}">Register User</a>
         <a href="{{ url_for('add_order') }}">Place Order</a>
     </div>
-    
-    <hr size="3", width="100%", color="black">
+
+    <hr size="3" , width="100%" , color="black">
     <br>
     <br>
     <br>
@@ -60,4 +70,5 @@
 
     {% endblock body %}
 </body>
+
 </html>
