@@ -20,11 +20,10 @@ class TestBase(LiveServerTestCase):
         return app
 
     def setUp(self):
-        chrome_options = webdriver.Chrome.options.Options()
+        chrome_options = webdriver.chrome.options.Options()
         chrome_options.add_argument("--headless")
 
         self.driver = webdriver.Chrome(options=chrome_options)
-<<<<<<< HEAD
 
         db.create_all()
         self.driver.get(f"http://localhost:{self.TEST_PORT}")
@@ -39,7 +38,7 @@ class TestBase(LiveServerTestCase):
 
 
 class TestCreateUser(TestBase):
-    def submit_input(self):
+    def test_submit_input(self):
         self.driver.find_element_by_xpath('//*[@id="email"]').send_keys(
             "test@gmail.com"
         )
@@ -48,32 +47,3 @@ class TestCreateUser(TestBase):
         self.driver.find_element_by_xpath('//*[@id="postcode"]').send_keys("G3 8PX")
         self.driver.find_element_by_xpath('//*[@id="phone"]').send_keys("07999999999")
         self.driver.find_element_by_xpath('//*[@id="submit"]').click()
-=======
-
-        db.create_all()
-        self.driver.get(f"http://localhost:{self.TEST_PORT}")
-
-    def tearDown(self):
-        self.driver.quit()
-        db.drop_all()
-
-    def test_server_is_up_and_running(self):
-        response = urlopen(f"http://localhost:{self.TEST_PORT}")
-        self.assertEqual(response.code, 200)
-
-
-class TestCreateUser(TestBase):
-    def submit_input(self):
-        self.driver.find_element_by_xpath('//*[@id="email"]').send_keys(
-            "test@gmail.com"
-        )
-        self.driver.find_element_by_xpath('//*[@id="name"]').send_keys("Test")
-        self.driver.find_element_by_xpath('//*[@id="house_number"]').send_keys("8")
-        self.driver.find_element_by_xpath('//*[@id="postcode"]').send_keys("G3 8PX")
-        self.driver.find_element_by_xpath('//*[@id="phone"]').send_keys("07999999999")
-        self.driver.find_element_by_xpath('//*[@id="submit"]').click()
-
-
-if __name__ == "__main__":
-    unittest.main(port=5050)
->>>>>>> 316515946922126980594c3a3488608ead0f5c61
