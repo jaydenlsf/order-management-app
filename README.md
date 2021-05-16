@@ -10,16 +10,15 @@
     - [Database Structure](#database-structure)
     - [Continuous Integration](#continuous-integration)
 - [Development](#development)
-    - [Unit Testing](#unit-testing)
-    - [Integration Testing](#Integration-testing)
     - [Front-end Design](#front-end-design)
+    - [Testing](#testing)
+      - [Unit Testing](#unit-testing)
+      - [Integration Testing](#Integration-testing)
 
-## Brief
-
+## Brie
 To create a CRUD application with utilisation of supporting tools, methodologies and technologies that encapsulate all core modules covered during training.
 
 ### Requirements
-
 In addition to the brief, the tech stack required is as follows:
 
 - A Kanban board (Trello or equivalent)
@@ -33,7 +32,6 @@ In addition to the brief, the tech stack required is as follows:
 - Cloud server: GCP Compute Engine
 
 ### My Approach
-
 To satisfy the main objective of the project, I have decided to create an application which allows the store owner to do the following:
 
 - Create
@@ -59,35 +57,31 @@ To satisfy the main objective of the project, I have decided to create an applic
 ## Architecture
 
 ### Risk Assessment
-
 A detailed risk assessment can be seen below, outlining the potential risks associated with this project:
 
 
 The risk assessment for this project can be found in full [here](https://drive.google.com/file/d/1efTXkcBoZ8RQpSCS0N6ThL2ODaX4Y6YH/view?usp=sharing).
 
 ### Project Tracking
-
 A Kanban board (Trello) was used to document the progress of my project, which has allowed me to effectively organise and prioritise tasks in a flexible way.
 
-![trello-board](https://user-images.githubusercontent.com/54101378/118400853-54727b00-b65b-11eb-8351-273c35b00c47.png)
+![trello](https://user-images.githubusercontent.com/54101378/118414508-d8992280-b69c-11eb-802c-5661aa4c323e.png)
 
 The link to this board can be found [here](https://trello.com/b/PZQrC10M/order-management-app).
 
 ### Database Structure
-
 The original proposed ERD (entity relationship diagram) showing the structure of the database can be seen below.
 
-![erd-proposed](https://user-images.githubusercontent.com/54101378/118401646-5db11700-b65e-11eb-89ec-ae9251f4aa0f.jpg)
+![erd-proposed](https://user-images.githubusercontent.com/54101378/118414456-8ce67900-b69c-11eb-8a26-9b8accd95af8.jpg)
 
 However, to avoid making the application too complicated, I have decided to simplify the database structure, shown in the below screenshot.
 
-![erd-actual](https://user-images.githubusercontent.com/54101378/118401846-2abb5300-b65f-11eb-9a9c-79dc044f5e16.jpg)
+![erd-actual](https://user-images.githubusercontent.com/54101378/118414461-9a036800-b69c-11eb-97f1-cfc355cfb157.jpg)
 
 As shown in the ERD, the database structure models a one-to-many relationship between Users entities and Orders entities. The relationship allows a single user to either have no orders or place multiple orders. Whereas, a single order can only be associated with one user.
 
 ### Continuous Integration
-
-![CI-Pipeline](https://user-images.githubusercontent.com/54101378/118402208-d5804100-b660-11eb-9538-3fe81a1048b3.jpg)
+![CI Pipeline](https://user-images.githubusercontent.com/54101378/118414434-6f191400-b69c-11eb-843a-c289091f16b1.jpg)
 
 The continuous integration approach allowed me to frequently integrate modified code, and this is achieved through the use of automated testing tools to check the code before full integration. As soon as a new commit is pushed to the version control system (Github), Jenkins will automatically fetch the changes via Github webhook and run unit and integration tests. After the tests are completed, the developer will be able to view the reports produced and refactor the code if necessary.
 
@@ -112,15 +106,19 @@ The continuous integration approach allowed me to frequently integrate modified 
 #### Update Order Page
 ![update-order-page](https://user-images.githubusercontent.com/54101378/118413833-3c215100-b699-11eb-87e9-3a7729a2e988.png)
 
-### Unit Testing
+### Testing
+![test](https://user-images.githubusercontent.com/54101378/118414389-282b1e80-b69c-11eb-8095-0a0ffb149bfb.png)
+
+#### Unit Testing
 Pytest is used in this project to test the route functions. The testing script is designed to assert that if a function is run, it should return an expected request response or a certain output. The testing script is run automatically everything when Jenkins receives a Github webhook. Jenkins console will print out the result of the build whether or not the tests were successful and also generate a coverage report.
 
 If any of the unit testing fails, the entire Jenkins build is marked as failed, and the errors can be viewed within Jenkins built in console.
 
-### Integration Testing
+#### Integration Testing
+
+
 
 ## Future Improvements
-
 There are a few improvements I would like to make in the future to optimise the functionality of the application:
 
 - Implement additional tables to allow the store owner to view an order's timeline
@@ -131,10 +129,8 @@ There are a few improvements I would like to make in the future to optimise the 
 
 
 ## Author
-
 Jayden Seng Foong Lee
 
 ## Acknowledgements
-
 - [Oliver Nochols](https://github.com/OliverNichols)
 - [Harry Volker](https://github.com/htr-volker)
