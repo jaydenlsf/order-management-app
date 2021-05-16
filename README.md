@@ -97,7 +97,7 @@ The screenshot below shows Jenkins automatically creates a new build whenever it
 
 #### Jenkins Script
 1. Installation of the virtual environment
-```
+```bash
 sudo apt install chromium-chromedriver -y
 sudo apt install python3-pip python3-venv -y
 
@@ -107,13 +107,13 @@ pip3 install -r requirements.txt
 ```
 
 2. Set environment variables
-```
+```bash
 export DATABASE_URI
 export SECRET_KEY
 ```
 
 3. Run unit and integration tests
-```
+```bash
 python3 -m pytest --cov=application --cov-report=xml --cov-report=html --junitxml=junit/test-results.xml
 ```
 
@@ -158,8 +158,45 @@ If any of the unit testing fails, the entire Jenkins build is marked as failed, 
 
 ![jenkins-test-report](https://user-images.githubusercontent.com/54101378/118415429-2a907700-b6a2-11eb-8d60-df94545953ba.png)
 
+The block of code shown below is an example of a unit test to test the function for registering a new user. First, a post request is sent to `/register` route with the required information, then query for the data from `Users` table. `assertEqual` tests that the first and second arguments are equal. If the values are not the same, the test will fail.
+
+```python
+class TestCreateUser(TestCase):
+    def test_create_user(self):
+        response = self.client.post(
+            url_for("register"),
+            data=dict(
+                email="test2@gmail.com",
+                name="Test2",
+                house_number="82",
+                postcode="G2 8PX",
+                phone="0788888888",
+            ),
+            follow_redirects=True,
+        )
+        user = Users.query.filter_by(id=2).first()
+        self.assertEqual("test2@gmail.com", user.email)
+        self.assertEqual("Test2", user.name)
+        self.assertEqual("82", user.house_number)
+        self.assertEqual("G2 8PX", user.postcode)
+        self.assertEqual("0788888888", user.phone)
+```
+
 #### Integration Testing
 Integration testing is used to test the application as a whole, rather than mocking the application to it's routes as we do in unit testing. To do this, a Python package called `Selenium` is used to simulate a user interacting with our application directly, and test the results are as expected.
+
+The code block shown below is to test the behaviour of the application when a user tries to place an order with a non-existing account. When this situation occurs, the user will see an error message displayed under the text box. `assertIn` tests the first and second arguments are equal. The test will fail if the values are not equal.
+
+```python
+class TestAddOrder(TestBase):
+    def test_add_order(self):
+        self.driver.get(f"http://localhost:{self.TEST_PORT}/add-order")
+        self.driver.find_element_by_xpath('//*[@id="email"]').send_keys('random@gmail.com')
+        self.driver.find_element_by_xpath('//*[@id="submit"]').click()
+
+        error = self.driver.find_element_by_xpath('/html/body/form/p[2]').text
+        self.assertIn('Account does not exist.', error)
+```
 
 ## Future Improvements
 There are a few improvements I would like to make in the future to optimise the functionality of the application:
