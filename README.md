@@ -11,11 +11,10 @@
     - [Continuous Integration](#continuous-integration)
 - [Development](#development)
     - [Unit Testing](#unit-testing)
-    - [Front-end Design](#front-end-design)
     - [Integration Testing](#Integration-testing)
+    - [Front-end Design](#front-end-design)
 
 ## Brief
-_____
 
 To create a CRUD application with utilisation of supporting tools, methodologies and technologies that encapsulate all core modules covered during training.
 
@@ -58,7 +57,6 @@ To satisfy the main objective of the project, I have decided to create an applic
     - The store owner can cancel an order as long as it has not been despatched
 
 ## Architecture
-_____
 
 ### Risk Assessment
 
@@ -96,24 +94,32 @@ The continuous integration approach allowed me to frequently integrate modified 
 #### Jenkins Script
 
 ## Development
-_____
+
+### Front-end Design
+
+#### Homepage
+![homepage](https://user-images.githubusercontent.com/54101378/118413699-91109780-b698-11eb-8ea8-d5af715aeb52.png)
+
+#### Register Page
+![register-page](https://user-images.githubusercontent.com/54101378/118413786-f19fd480-b698-11eb-9338-0912d591406f.png)
+
+#### Add Order Page
+![add-order-page](https://user-images.githubusercontent.com/54101378/118413814-1a27ce80-b699-11eb-9e41-6de2f1e39deb.png)
+
+#### View Order Details Page
+![view-order-page](https://user-images.githubusercontent.com/54101378/118413956-d5e8fe00-b699-11eb-8e72-3c978fb5889a.png)
+
+#### Update Order Page
+![update-order-page](https://user-images.githubusercontent.com/54101378/118413833-3c215100-b699-11eb-87e9-3a7729a2e988.png)
 
 ### Unit Testing
 Pytest is used in this project to test the route functions. The testing script is designed to assert that if a function is run, it should return an expected request response or a certain output. The testing script is run automatically everything when Jenkins receives a Github webhook. Jenkins console will print out the result of the build whether or not the tests were successful and also generate a coverage report.
 
 If any of the unit testing fails, the entire Jenkins build is marked as failed, and the errors can be viewed within Jenkins built in console.
 
-### Front-end Design
-#### Homepage
-#### Register Page
-#### Add Order Page
-#### View Order Details Page
-#### Update Order Page
-
 ### Integration Testing
 
 ## Future Improvements
-_____
 
 There are a few improvements I would like to make in the future to optimise the functionality of the application:
 
@@ -125,12 +131,10 @@ There are a few improvements I would like to make in the future to optimise the 
 
 
 ## Author
-_____
 
 Jayden Seng Foong Lee
 
 ## Acknowledgements
-_____
 
 - [Oliver Nochols](https://github.com/OliverNichols)
 - [Harry Volker](https://github.com/htr-volker)
