@@ -79,7 +79,7 @@ However, to avoid making the application too complicated, I have decided to simp
 
 ![erd-actual](https://user-images.githubusercontent.com/54101378/118414461-9a036800-b69c-11eb-97f1-cfc355cfb157.jpg)
 
-As shown in the ERD, the database structure models a one-to-many relationship between Users entities and Orders entities. The relationship allows a single user to either have no orders or place multiple orders. Whereas, a single order can only be associated with one user.
+As shown in the ERD, the database structure models a one-to-many or one-to-none relationship between Users entities and Orders entities. The relationship allows a single user to either have no orders or place multiple orders. Whereas, a single order can only be associated with one user.
 
 ### Continuous Integration
 ![CI Pipeline](https://user-images.githubusercontent.com/54101378/118414434-6f191400-b69c-11eb-843a-c289091f16b1.jpg)
