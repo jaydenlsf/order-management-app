@@ -185,7 +185,7 @@ class TestCreateUser(TestCase):
 #### Integration Testing
 Integration testing is used to test the application as a whole, rather than mocking the application to it's routes as we do in unit testing. To do this, a Python package called `Selenium` is used to simulate a user interacting with our application directly, and test the results are as expected.
 
-The code block shown below is to test the behaviour of the application when a user tries to place an order with a non-existing account. When this situation occurs, the user will see an error message displayed under the text box. `assertIn` tests the first and second arguments are equal. The test will fail if the values are not equal.
+The code block shown below is an example of integration testing to test the behaviour of the application when a user tries to place an order with a non-existing account. When this situation occurs, the user will see an error message displayed under the text box. `assertIn` tests the first and second arguments are equal. The test will fail if the values are not equal.
 
 ```python
 class TestAddOrder(TestBase):
