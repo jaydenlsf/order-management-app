@@ -15,7 +15,7 @@
       - [Unit Testing](#unit-testing)
       - [Integration Testing](#Integration-testing)
 
-## Brie
+## Brief
 To create a CRUD application with utilisation of supporting tools, methodologies and technologies that encapsulate all core modules covered during training.
 
 ### Requirements
@@ -79,7 +79,7 @@ However, to avoid making the application too complicated, I have decided to simp
 
 ![erd-actual](https://user-images.githubusercontent.com/54101378/118414461-9a036800-b69c-11eb-97f1-cfc355cfb157.jpg)
 
-As shown in the ERD, the database structure models a one-to-many relationship between Users entities and Orders entities. The relationship allows a single user to either have no orders or place multiple orders. Whereas, a single order can only be associated with one user.
+As shown in the ERD, the database structure models a one-to-many or one-to-none relationship between Users entities and Orders entities. The relationship allows a single user to either have no orders or place multiple orders. Whereas, a single order can only be associated with one user.
 
 ### Continuous Integration
 ![CI Pipeline](https://user-images.githubusercontent.com/54101378/118414434-6f191400-b69c-11eb-843a-c289091f16b1.jpg)
@@ -98,7 +98,6 @@ The screenshot below shows Jenkins automatically creates a new build whenever it
 #### Jenkins Script
 1. Installation of the virtual environment
 ```bash
-sudo apt install chromium-chromedriver -y
 sudo apt install python3-pip python3-venv -y
 
 python3 -m venv venv
@@ -106,13 +105,24 @@ source venv/bin/activate
 pip3 install -r requirements.txt
 ```
 
-2. Set environment variables
+2. Installation of webdriver
+```bash
+sudo apt install chromium-chromedriver -y
+
+sudo apt install wget unzip -y
+version=$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$(chromium-browser --version | grep -oP 'Chromium \K\d+'))
+wget https://chromedriver.storage.googleapis.com/${version}/chromedriver_linux64.zip
+sudo unzip chromedriver_linux64.zip -d /usr/bin
+rm chromedriver_linux64.zip
+```
+
+3. Set environment variables
 ```bash
 export DATABASE_URI
 export SECRET_KEY
 ```
 
-3. Run unit and integration tests
+4. Run unit and integration tests
 ```bash
 python3 -m pytest --cov=application --cov-report=xml --cov-report=html --junitxml=junit/test-results.xml
 ```
@@ -185,7 +195,7 @@ class TestCreateUser(TestCase):
 #### Integration Testing
 Integration testing is used to test the application as a whole, rather than mocking the application to it's routes as we do in unit testing. To do this, a Python package called `Selenium` is used to simulate a user interacting with our application directly, and test the results are as expected.
 
-The code block shown below is to test the behaviour of the application when a user tries to place an order with a non-existing account. When this situation occurs, the user will see an error message displayed under the text box. `assertIn` tests the first and second arguments are equal. The test will fail if the values are not equal.
+The code block shown below is an example of integration testing to test the behaviour of the application when a user tries to place an order with a non-existing account. When this situation occurs, the user will see an error message displayed under the text box. `assertIn` tests the first and second arguments are equal. The test will fail if the values are not equal.
 
 ```python
 class TestAddOrder(TestBase):
